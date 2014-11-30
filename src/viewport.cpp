@@ -7,22 +7,22 @@ Viewport::Viewport()
 
 void Viewport::moveLeft(float x)
 {
-    viewModifier.x += x;
+    viewModifier.x -= x;
 }
 
 void Viewport::moveRight(float x)
 {
-    viewModifier.x -= x;
+    viewModifier.x += x;
 }
 
 void Viewport::moveUp(float y)
 {
-    viewModifier.y += y;
+    viewModifier.y -= y;
 }
 
 void Viewport::moveDown(float y)
 {
-    viewModifier.y -= y;
+    viewModifier.y += y;
 }
 
 sf::Vector2f Viewport::getModifier()

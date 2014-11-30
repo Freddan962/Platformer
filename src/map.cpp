@@ -19,8 +19,15 @@ template <class A>
 void Map::drawVector(sf::RenderTarget &target, std::vector<std::vector<A> > &dVector)
 {
     for (int i = 0; i < dVector.size(); i++)
+    {
         for (int j = 0; j < dVector.at(i).size(); j++)
+        {
+            sf::Vector2f pos = dVector.at(i).at(j).mSprite.getPosition();
+            dVector.at(i).at(j).mSprite.move(mViewport.getModifier());
             dVector.at(i).at(j).draw(target);
+            dVector.at(i).at(j).mSprite.setPosition(pos);
+        }
+    }
 }
 
 void Map::loadMap(std::string filepath)

@@ -73,6 +73,12 @@ void Editor::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
     switch(key)
     {
+        case sf::Keyboard::Left:
+            if (isPressed) mMap.mViewport.moveLeft(25);
+            break;
+        case sf::Keyboard::Right:
+            if (isPressed) mMap.mViewport.moveRight(25);
+            break;
         default:
             break;
     }

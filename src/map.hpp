@@ -27,9 +27,10 @@ class Map
         template <class A>
         void    drawVector(sf::RenderTarget &target, std::vector<std::vector<A> > &dVector);
 
-    private:
+    public:
         Viewport mViewport;
 
+    private:
         std::vector<std::vector<Tile> > mTiles;
         std::vector<std::vector<Decoration> > mDecoration;
         std::vector<std::vector<Tree> > mTrees;
