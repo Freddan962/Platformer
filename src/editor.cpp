@@ -71,10 +71,10 @@ void Editor::processInput()
 
 void Editor::update()
 {
-    if(mLeft) mScreen.x += mScrollSpeed.x * TimePerFrame.asSeconds();
-    if(mRight) mScreen.x -= mScrollSpeed.x * TimePerFrame.asSeconds();
-    if(mUp) mScreen.y += mScrollSpeed.y * TimePerFrame.asSeconds();
-    if(mDown) mScreen.y -= mScrollSpeed.y * TimePerFrame.asSeconds();
+    if(mLeft) mScreen.x -= mScrollSpeed.x * TimePerFrame.asSeconds();
+    if(mRight) mScreen.x += mScrollSpeed.x * TimePerFrame.asSeconds();
+    if(mUp) mScreen.y -= mScrollSpeed.y * TimePerFrame.asSeconds();
+    if(mDown) mScreen.y += mScrollSpeed.y * TimePerFrame.asSeconds();
 
     sf::Vector2i mouseTilePos;
     mouseTilePos.x = sf::Mouse::getPosition(mWindow).x / Tile::WIDTH * Tile::WIDTH + mScreen.x;
