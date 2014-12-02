@@ -86,8 +86,9 @@ void Editor::update()
     mouseTilePos.x = tileCol * Tile::WIDTH;
     mouseTilePos.y = tileRow * Tile::HEIGHT;
 
-
     mouseSelection.setPosition(mouseTilePos.x, mouseTilePos.y);
+
+    mMap.getBackground()->setPosition(mScreen);
 }
 
 void Editor::render()

@@ -62,3 +62,8 @@ void Map::loadData(std::vector<std::vector<A> > &dVector, std::string filepath)
         i++;
     }
 }
+
+sf::Sprite *Map::getBackground()
+{
+    return &mBackground;
+}

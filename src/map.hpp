@@ -15,9 +15,10 @@
 class Map
 {
     public:
-                Map();
-        void    draw(sf::RenderTarget &target);
-        void    loadMap(std::string filepath);
+                    Map();
+        void        draw(sf::RenderTarget &target);
+        void        loadMap(std::string filepath);
+        sf::Sprite  *getBackground();
     private:
         template <class A>
         void    loadData(std::vector<std::vector<A> > &dVector, std::string filepath);
@@ -32,7 +33,6 @@ class Map
 
         sf::Sprite mBackground;
         sf::Texture mBackgroundTexture;
-
 };
 
 #endif
