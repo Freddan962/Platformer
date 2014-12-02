@@ -80,16 +80,19 @@ void Editor::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
     switch(key)
     {
         case sf::Keyboard::Left:
-            if (isPressed) mScreen.x -= 25;
+            if (isPressed) mScreen.x += 25;
             break;
         case sf::Keyboard::Right:
-            if (isPressed) mScreen.x += 25;
+            if (isPressed) mScreen.x -= 25;
             break;
         case sf::Keyboard::Up:
             if (isPressed) mScreen.y += 25;
             break;
         case sf::Keyboard::Down:
             if (isPressed) mScreen.y -= 25;
+            break;
+        case sf::Keyboard::R:
+            reset();
             break;
         default:
             break;
@@ -98,6 +101,6 @@ void Editor::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 
 void Editor::reset()
 {
-
+    mScreen = sf::Vector2f(0, 0);
 }
 
