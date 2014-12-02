@@ -2,9 +2,9 @@
 
 std::vector<sf::Texture> Tile::textures;
 
-const int Tile::nTextures = 17;
-const int Tile::width = 100;
-const int Tile::height = 100;
+const int Tile::NTEXTURES = 17;
+const int Tile::WIDTH = 100;
+const int Tile::HEIGHT = 100;
 
 Tile::Tile()
 {
@@ -14,7 +14,7 @@ Tile::Tile()
 
 void Tile::loadTextures()
 {
-    for (int i = 1; i <= nTextures; i++)
+    for (int i = 1; i <= NTEXTURES; i++)
     {
         sf::Texture tTexture;
         tTexture.loadFromFile("media/" + std::to_string(i) + ".png");

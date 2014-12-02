@@ -48,7 +48,7 @@ void Map::loadData(std::vector<std::vector<A> > &dVector, std::string filepath)
         while(ss >> type)
         {
             A tObject;
-            tObject.mSprite.setPosition(Tile::width * j, Tile::height * i);
+            tObject.mSprite.setPosition(Tile::WIDTH * j, Tile::HEIGHT * i);
 
             if (type != 0)
                 tObject.setTexture(type-1);

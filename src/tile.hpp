@@ -21,9 +21,9 @@ class Tile : public Entity
         void        setSolid(int isSolid);
 
     public:
-        static const int nTextures;
-        static const int width;
-        static const int height;
+        static const int NTEXTURES;
+        static const int WIDTH;
+        static const int HEIGHT;
 
     private:
         static std::vector<sf::Texture> textures;
