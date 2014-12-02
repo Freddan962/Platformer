@@ -1,14 +1,17 @@
 #include "game.hpp"
 
-const sf::Time Game::timePerFrame = sf::seconds(1.f/120.f);
-const std::string Game::mName = "Platformer Evolution";
-const float Game::mWidth = 1400;
-const float Game::mHeight = 800;
+const sf::Time Game::TimePerFrame = sf::seconds(1.f/120.f);
+const std::string Game::NAME = "Platformer";
+const float Game::WIDTH = 1400;
+const float Game::HEIGHT = 800;
 
 Game::Game()
-: mWindow(sf::VideoMode(mWidth, mHeight), mName)
+: mWindow(sf::VideoMode(WIDTH, HEIGHT), NAME)
 {
     mWindow.setFramerateLimit(60);
+    mView.reset(sf::FloatRect(0, 0, WIDTH, HEIGHT));
+    mView.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
+
     Tile::loadTextures();
     Decoration::loadTextures();
     Tree::loadTextures();
@@ -24,11 +27,11 @@ void Game::run()
     while (mWindow.isOpen())
     {
         timeSinceLastFrame += frameTimer.restart();
-        while (timeSinceLastFrame >= timePerFrame)
+        while (timeSinceLastFrame >= TimePerFrame)
         {
             processInput();
             update();
-            timeSinceLastFrame -= timePerFrame;
+            timeSinceLastFrame -= TimePerFrame;
         }
 
         processInput();
@@ -64,8 +67,11 @@ void Game::update()
 void Game::render()
 {
     mWindow.clear();
+    mView.reset(sf::FloatRect(mScreen.x, mScreen.y, WIDTH, HEIGHT));
+    mWindow.setView(mView);
     mMap.draw(mWindow);
     //player.draw(mWindow);
+    mWindow.setView(mWindow.getDefaultView());
     mWindow.display();
 }
 

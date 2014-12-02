@@ -8,8 +8,6 @@
 #include <sstream>
 #include <typeinfo>
 
-#include "viewport.hpp"
-
 #include "tile.hpp"
 #include "decoration.hpp"
 #include "tree.hpp"
@@ -26,9 +24,6 @@ class Map
 
         template <class A>
         void    drawVector(sf::RenderTarget &target, std::vector<std::vector<A> > &dVector);
-
-    public:
-        Viewport mViewport;
 
     private:
         std::vector<std::vector<Tile> > mTiles;

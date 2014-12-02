@@ -1,14 +1,18 @@
 #include "editor.hpp"
 
-const sf::Time Editor::timePerFrame = sf::seconds(1.f/120.f);
-const std::string Editor::mName = "Platformer Editor";
-const float Editor::mWidth = 1400;
-const float Editor::mHeight = 800;
+const sf::Time Editor::TimePerFrame = sf::seconds(1.f/120.f);
+const std::string Editor::NAME = "Platformer Editor";
+const float Editor::WIDTH = 1400;
+const float Editor::HEIGHT = 800;
 
 Editor::Editor()
-: mWindow(sf::VideoMode(mWidth, mHeight), mName)
+: mWindow(sf::VideoMode(WIDTH, HEIGHT), NAME)
+, mScreen(0.f, 0.f)
 {
     mWindow.setFramerateLimit(60);
+    mView.reset(sf::FloatRect(0, 0, WIDTH, HEIGHT));
+    mView.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
+
     Tile::loadTextures();
     Decoration::loadTextures();
     Tree::loadTextures();
@@ -24,11 +28,11 @@ void Editor::run()
     while (mWindow.isOpen())
     {
         timeSinceLastFrame += frameTimer.restart();
-        while (timeSinceLastFrame >= timePerFrame)
+        while (timeSinceLastFrame >= TimePerFrame)
         {
             processInput();
             update();
-            timeSinceLastFrame -= timePerFrame;
+            timeSinceLastFrame -= TimePerFrame;
         }
 
         processInput();
@@ -64,8 +68,10 @@ void Editor::update()
 void Editor::render()
 {
     mWindow.clear();
+    mView.reset(sf::FloatRect(mScreen.x, mScreen.y, WIDTH, HEIGHT));
+    mWindow.setView(mView);
     mMap.draw(mWindow);
-    //player.draw(mWindow);
+    mWindow.setView(mWindow.getDefaultView());
     mWindow.display();
 }
 
@@ -74,10 +80,16 @@ void Editor::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
     switch(key)
     {
         case sf::Keyboard::Left:
-            if (isPressed) mMap.mViewport.moveLeft(25);
+            if (isPressed) mScreen.x -= 25;
             break;
         case sf::Keyboard::Right:
-            if (isPressed) mMap.mViewport.moveRight(25);
+            if (isPressed) mScreen.x += 25;
+            break;
+        case sf::Keyboard::Up:
+            if (isPressed) mScreen.y += 25;
+            break;
+        case sf::Keyboard::Down:
+            if (isPressed) mScreen.y -= 25;
             break;
         default:
             break;

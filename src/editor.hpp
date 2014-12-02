@@ -26,10 +26,13 @@ class Editor
 
     private:
         sf::RenderWindow            mWindow;
-        static const std::string    mName;
-        static const float          mWidth;
-        static const float          mHeight;
-        static const sf::Time       timePerFrame;
+        sf::View                    mView;
+        sf::Vector2f                mScreen;
+
+        static const std::string    NAME;
+        static const float          WIDTH;
+        static const float          HEIGHT;
+        static const sf::Time       TimePerFrame;
 
         Map                         mMap;
 };
