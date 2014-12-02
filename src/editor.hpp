@@ -24,6 +24,13 @@ class Editor
         void        handleUserInput(sf::Keyboard::Key key, bool isPressed);
         void        reset();
 
+        void        moveLeft(bool isPressed);
+        void        moveRight(bool isPressed);
+        void        moveUp(bool isPressed);
+        void        moveDown(bool isPressed);
+
+        void        changeViewMode(bool isPressed);
+
     private:
         sf::RenderWindow            mWindow;
         sf::View                    mView;
@@ -35,10 +42,9 @@ class Editor
         static const sf::Time       TimePerFrame;
 
         Map                         mMap;
-
         sf::Vector2f                mScrollSpeed;
+        bool                        mViewMode;
         bool                        mLeft, mRight, mUp, mDown;
-
         sf::RectangleShape          mouseSelection;
 };
 

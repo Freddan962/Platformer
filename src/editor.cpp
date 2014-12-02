@@ -20,6 +20,7 @@ Editor::Editor()
 
     mMap.loadMap("1");
 
+    mViewMode = false;
     mLeft = mRight = mUp = mDown = false;
 
     mouseSelection.setSize(sf::Vector2f(Tile::WIDTH, Tile::HEIGHT));
@@ -65,16 +66,18 @@ void Editor::processInput()
             case sf::Event::KeyReleased:
                 handleUserInput(event.key.code, false);
                 break;
+            default:
+                break;
         }
     }
 }
 
 void Editor::update()
 {
-   /* if(mLeft) mScreen.x -= mScrollSpeed.x * TimePerFrame.asSeconds();
+    if(mLeft) mScreen.x -= mScrollSpeed.x * TimePerFrame.asSeconds();
     if(mRight) mScreen.x += mScrollSpeed.x * TimePerFrame.asSeconds();
     if(mUp) mScreen.y -= mScrollSpeed.y * TimePerFrame.asSeconds();
-    if(mDown) mScreen.y += mScrollSpeed.y * TimePerFrame.asSeconds();*/
+    if(mDown) mScreen.y += mScrollSpeed.y * TimePerFrame.asSeconds();
 
     sf::Vector2i mouseTilePos;
     mouseTilePos.x = sf::Mouse::getPosition(mWindow).x / Tile::WIDTH * Tile::WIDTH + mScreen.x;
@@ -95,33 +98,63 @@ void Editor::render()
 
 void Editor::handleUserInput(sf::Keyboard::Key key, bool isPressed)
 {
-    if (isPressed)
+    switch(key)
     {
-        switch(key)
-        {
-            case sf::Keyboard::Left:
-                mScreen.x -= mScrollSpeed.x;
-                break;
-            case sf::Keyboard::Right:
-                mScreen.x += mScrollSpeed.x;
-                break;
-            case sf::Keyboard::Up:
-                mScreen.y -= mScrollSpeed.y;
-                break;
-            case sf::Keyboard::Down:
-                mScreen.y += mScrollSpeed.y;
-                break;
-            case sf::Keyboard::R:
-                reset();
-                break;
-            default:
-                break;
-        }
+        case sf::Keyboard::Left:
+            moveLeft(isPressed);
+            break;
+        case sf::Keyboard::Right:
+            moveRight(isPressed);
+            break;
+        case sf::Keyboard::Up:
+            moveUp(isPressed);
+            break;
+        case sf::Keyboard::Down:
+            moveDown(isPressed);
+            break;
+        case sf::Keyboard::R:
+            reset();
+            break;
+        case sf::Keyboard::M:
+            changeViewMode(isPressed);
+            break;
+        default:
+            break;
     }
 }
 
 void Editor::reset()
 {
     mScreen = sf::Vector2f(0, 0);
+    mLeft = mRight = mUp = mDown = false;
+}
+
+void Editor::moveLeft(bool isPressed)
+{
+    if (mViewMode) mLeft = isPressed;
+    else if(isPressed) mScreen.x -= mScrollSpeed.x;
+}
+
+void Editor::moveRight(bool isPressed)
+{
+    if (mViewMode) mRight = isPressed;
+    else if(isPressed) mScreen.x += mScrollSpeed.x;
+}
+
+void Editor::moveUp(bool isPressed)
+{
+    if (mViewMode) mUp = isPressed;
+    else if(isPressed) mScreen.y -= mScrollSpeed.y;
+}
+
+void Editor::moveDown(bool isPressed)
+{
+    if (mViewMode) mDown = isPressed;
+    else if(isPressed) mScreen.y += mScrollSpeed.y;
+}
+
+void Editor::changeViewMode(bool isPressed)
+{
+    if (isPressed) mViewMode = !mViewMode;
 }
 
