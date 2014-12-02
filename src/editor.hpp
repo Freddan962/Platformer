@@ -46,6 +46,8 @@ class Editor
         bool                        mViewMode;
         bool                        mLeft, mRight, mUp, mDown;
         sf::RectangleShape          mouseSelection;
+
+        sf::Vector2i                accum;
 };
 
 #endif

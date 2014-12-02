@@ -8,7 +8,7 @@ const int Editor::HEIGHT = 800;
 Editor::Editor()
 : mWindow(sf::VideoMode(WIDTH, HEIGHT), NAME)
 , mScreen(0, 0)
-, mScrollSpeed(100, 100)
+, mScrollSpeed(300, 300)
 {
     mWindow.setFramerateLimit(60);
     mView.reset(sf::FloatRect(0, 0, WIDTH, HEIGHT));
@@ -20,7 +20,7 @@ Editor::Editor()
 
     mMap.loadMap("1");
 
-    mViewMode = false;
+    mViewMode = true;
     mLeft = mRight = mUp = mDown = false;
 
     mouseSelection.setSize(sf::Vector2f(Tile::WIDTH, Tile::HEIGHT));
@@ -79,9 +79,14 @@ void Editor::update()
     if(mUp) mScreen.y -= mScrollSpeed.y * TimePerFrame.asSeconds();
     if(mDown) mScreen.y += mScrollSpeed.y * TimePerFrame.asSeconds();
 
-    sf::Vector2i mouseTilePos;
-    mouseTilePos.x = sf::Mouse::getPosition(mWindow).x / Tile::WIDTH * Tile::WIDTH + mScreen.x;
-    mouseTilePos.y = sf::Mouse::getPosition(mWindow).y / Tile::HEIGHT * Tile::HEIGHT + mScreen.y;
+    sf::Vector2i mousePos = sf::Mouse::getPosition(mWindow);
+    int tileCol = (mousePos.x + mScreen.x) / Tile::WIDTH;
+    int tileRow = (mousePos.y + mScreen.y) / Tile::HEIGHT;
+    sf::Vector2f mouseTilePos;
+    mouseTilePos.x = tileCol * Tile::WIDTH;
+    mouseTilePos.y = tileRow * Tile::HEIGHT;
+
+
     mouseSelection.setPosition(mouseTilePos.x, mouseTilePos.y);
 }
 
