@@ -8,7 +8,7 @@ const int Editor::HEIGHT = 800;
 Editor::Editor()
 : mWindow(sf::VideoMode(WIDTH, HEIGHT), NAME)
 , mScreen(0, 0)
-, mScrollSpeed(250, 250)
+, mScrollSpeed(100, 100)
 {
     mWindow.setFramerateLimit(60);
     mView.reset(sf::FloatRect(0, 0, WIDTH, HEIGHT));
@@ -71,10 +71,10 @@ void Editor::processInput()
 
 void Editor::update()
 {
-    if(mLeft) mScreen.x -= mScrollSpeed.x * TimePerFrame.asSeconds();
+   /* if(mLeft) mScreen.x -= mScrollSpeed.x * TimePerFrame.asSeconds();
     if(mRight) mScreen.x += mScrollSpeed.x * TimePerFrame.asSeconds();
     if(mUp) mScreen.y -= mScrollSpeed.y * TimePerFrame.asSeconds();
-    if(mDown) mScreen.y += mScrollSpeed.y * TimePerFrame.asSeconds();
+    if(mDown) mScreen.y += mScrollSpeed.y * TimePerFrame.asSeconds();*/
 
     sf::Vector2i mouseTilePos;
     mouseTilePos.x = sf::Mouse::getPosition(mWindow).x / Tile::WIDTH * Tile::WIDTH + mScreen.x;
@@ -95,25 +95,28 @@ void Editor::render()
 
 void Editor::handleUserInput(sf::Keyboard::Key key, bool isPressed)
 {
-    switch(key)
+    if (isPressed)
     {
-        case sf::Keyboard::Left:
-            mLeft = isPressed;
-            break;
-        case sf::Keyboard::Right:
-            mRight = isPressed;
-            break;
-        case sf::Keyboard::Up:
-            mUp = isPressed;
-            break;
-        case sf::Keyboard::Down:
-            mDown = isPressed;
-            break;
-        case sf::Keyboard::R:
-            reset();
-            break;
-        default:
-            break;
+        switch(key)
+        {
+            case sf::Keyboard::Left:
+                mScreen.x -= mScrollSpeed.x;
+                break;
+            case sf::Keyboard::Right:
+                mScreen.x += mScrollSpeed.x;
+                break;
+            case sf::Keyboard::Up:
+                mScreen.y -= mScrollSpeed.y;
+                break;
+            case sf::Keyboard::Down:
+                mScreen.y += mScrollSpeed.y;
+                break;
+            case sf::Keyboard::R:
+                reset();
+                break;
+            default:
+                break;
+        }
     }
 }
 
