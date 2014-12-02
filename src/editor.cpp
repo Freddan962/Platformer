@@ -22,7 +22,10 @@ Editor::Editor()
 
     mLeft = mRight = mUp = mDown = false;
 
-    mouseSelection.setSize(sf::Vector2f(50, 50));
+    mouseSelection.setSize(sf::Vector2f(Tile::WIDTH, Tile::HEIGHT));
+    mouseSelection.setFillColor(sf::Color::Transparent);
+    mouseSelection.setOutlineColor(sf::Color::Black);
+    mouseSelection.setOutlineThickness(1.f);
 }
 
 void Editor::run()
@@ -72,6 +75,11 @@ void Editor::update()
     if(mRight) mScreen.x -= mScrollSpeed.x * TimePerFrame.asSeconds();
     if(mUp) mScreen.y += mScrollSpeed.y * TimePerFrame.asSeconds();
     if(mDown) mScreen.y -= mScrollSpeed.y * TimePerFrame.asSeconds();
+
+    sf::Vector2i mouseTilePos;
+    mouseTilePos.x = sf::Mouse::getPosition(mWindow).x / Tile::WIDTH * Tile::WIDTH;
+    mouseTilePos.y = sf::Mouse::getPosition(mWindow).y / Tile::HEIGHT * Tile::HEIGHT;
+    mouseSelection.setPosition(mouseTilePos.x, mouseTilePos.y);
 }
 
 void Editor::render()
@@ -80,6 +88,7 @@ void Editor::render()
     mView.reset(sf::FloatRect(mScreen.x, mScreen.y, WIDTH, HEIGHT));
     mWindow.setView(mView);
     mMap.draw(mWindow);
+    mWindow.draw(mouseSelection);
     mWindow.setView(mWindow.getDefaultView());
     mWindow.display();
 }
