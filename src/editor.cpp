@@ -22,11 +22,6 @@ Editor::Editor()
 
     mViewMode = true;
     mLeft = mRight = mUp = mDown = false;
-
-    mouseSelection.setSize(sf::Vector2f(Tile::WIDTH, Tile::HEIGHT));
-    mouseSelection.setFillColor(sf::Color::Transparent);
-    mouseSelection.setOutlineColor(sf::Color::Black);
-    mouseSelection.setOutlineThickness(1.f);
 }
 
 void Editor::run()
@@ -65,6 +60,8 @@ void Editor::processInput()
                 break;
             case sf::Event::KeyReleased:
                 handleUserInput(event.key.code, false);
+            case sf::Event::MouseWheelMoved:
+                selectBlock(event.mouseWheel);
                 break;
             default:
                 break;
@@ -86,7 +83,7 @@ void Editor::update()
     mouseTilePos.x = tileCol * Tile::WIDTH;
     mouseTilePos.y = tileRow * Tile::HEIGHT;
 
-    mouseSelection.setPosition(mouseTilePos.x, mouseTilePos.y);
+    mSelector.getShape()->setPosition(mouseTilePos.x, mouseTilePos.y);
 
     mMap.getBackground()->setPosition(mScreen);
 }
@@ -97,7 +94,7 @@ void Editor::render()
     mView.reset(sf::FloatRect(mScreen.x, mScreen.y, WIDTH, HEIGHT));
     mWindow.setView(mView);
     mMap.draw(mWindow);
-    mWindow.draw(mouseSelection);
+    mSelector.draw(mWindow);
     mWindow.setView(mWindow.getDefaultView());
     mWindow.display();
 }
@@ -127,6 +124,11 @@ void Editor::handleUserInput(sf::Keyboard::Key key, bool isPressed)
         default:
             break;
     }
+}
+
+void Editor::selectBlock(sf::Event::MouseWheelEvent event)
+{
+    mSelector.changeTexture(event.delta);
 }
 
 void Editor::reset()

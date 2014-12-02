@@ -11,14 +11,16 @@
 class Tile : public Entity
 {
     public:
-                Tile();
+                        Tile();
 
-        static void loadTextures();
-        void        update();
-        void        onCollide();
+        static void     loadTextures();
+        void            update();
+        void            onCollide();
 
-        void        setTexture(int id);
-        void        setSolid(int isSolid);
+        void            setTexture(int id);
+        void            setSolid(int isSolid);
+
+        static sf::Texture *getTexture(int id);
 
     public:
         static const int NTEXTURES;

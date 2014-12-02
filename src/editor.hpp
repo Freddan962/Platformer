@@ -10,6 +10,7 @@
 #include "map.hpp"
 #include "player.hpp"
 #include "tile.hpp"
+#include "selector.hpp"
 
 class Editor
 {
@@ -22,6 +23,8 @@ class Editor
         void        update();
         void        render();
         void        handleUserInput(sf::Keyboard::Key key, bool isPressed);
+        void        selectBlock(sf::Event::MouseWheelEvent event);
+
         void        reset();
 
         void        moveLeft(bool isPressed);
@@ -45,9 +48,7 @@ class Editor
         sf::Vector2f                mScrollSpeed;
         bool                        mViewMode;
         bool                        mLeft, mRight, mUp, mDown;
-        sf::RectangleShape          mouseSelection;
 
-        sf::Vector2i                accum;
+        Selector                    mSelector;
 };
-
 #endif

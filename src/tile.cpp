@@ -33,3 +33,8 @@ void Tile::setSolid(int isSolid)
 {
     solid = isSolid;
 }
+
+sf::Texture *Tile::getTexture(int id)
+{
+    return &textures.at(id);
+}
