@@ -30,8 +30,8 @@ class Editor
         sf::Vector2f                mScreen;
 
         static const std::string    NAME;
-        static const float          WIDTH;
-        static const float          HEIGHT;
+        static const int            WIDTH;
+        static const int            HEIGHT;
         static const sf::Time       TimePerFrame;
 
         Map                         mMap;

@@ -2,8 +2,8 @@
 
 const sf::Time Editor::TimePerFrame = sf::seconds(1.f/120.f);
 const std::string Editor::NAME = "Platformer Editor";
-const float Editor::WIDTH = 1400;
-const float Editor::HEIGHT = 800;
+const int Editor::WIDTH = 1400;
+const int Editor::HEIGHT = 800;
 
 Editor::Editor()
 : mWindow(sf::VideoMode(WIDTH, HEIGHT), NAME)

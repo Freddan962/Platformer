@@ -2,8 +2,8 @@
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f/120.f);
 const std::string Game::NAME = "Platformer";
-const float Game::WIDTH = 1400;
-const float Game::HEIGHT = 800;
+const int Game::WIDTH = 1400;
+const int Game::HEIGHT = 800;
 
 Game::Game()
 : mWindow(sf::VideoMode(WIDTH, HEIGHT), NAME)
