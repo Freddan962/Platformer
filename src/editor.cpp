@@ -77,8 +77,8 @@ void Editor::update()
     if(mDown) mScreen.y -= mScrollSpeed.y * TimePerFrame.asSeconds();
 
     sf::Vector2i mouseTilePos;
-    mouseTilePos.x = sf::Mouse::getPosition(mWindow).x / Tile::WIDTH * Tile::WIDTH;
-    mouseTilePos.y = sf::Mouse::getPosition(mWindow).y / Tile::HEIGHT * Tile::HEIGHT;
+    mouseTilePos.x = sf::Mouse::getPosition(mWindow).x / Tile::WIDTH * Tile::WIDTH + mScreen.x;
+    mouseTilePos.y = sf::Mouse::getPosition(mWindow).y / Tile::HEIGHT * Tile::HEIGHT + mScreen.y;
     mouseSelection.setPosition(mouseTilePos.x, mouseTilePos.y);
 }
 
