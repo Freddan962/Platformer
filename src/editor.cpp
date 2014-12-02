@@ -21,6 +21,8 @@ Editor::Editor()
     mMap.loadMap("1");
 
     mLeft = mRight = mUp = mDown = false;
+
+    mouseSelection.setSize(sf::Vector2f(50, 50));
 }
 
 void Editor::run()

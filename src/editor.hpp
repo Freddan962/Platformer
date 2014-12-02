@@ -38,6 +38,8 @@ class Editor
 
         sf::Vector2f                mScrollSpeed;
         bool                        mLeft, mRight, mUp, mDown;
+
+        sf::RectangleShape          mouseSelection;
 };
 
 #endif
