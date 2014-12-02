@@ -7,7 +7,8 @@ const int Editor::HEIGHT = 800;
 
 Editor::Editor()
 : mWindow(sf::VideoMode(WIDTH, HEIGHT), NAME)
-, mScreen(0.f, 0.f)
+, mScreen(0, 0)
+, mScrollSpeed(250, 250)
 {
     mWindow.setFramerateLimit(60);
     mView.reset(sf::FloatRect(0, 0, WIDTH, HEIGHT));
@@ -18,6 +19,8 @@ Editor::Editor()
     Tree::loadTextures();
 
     mMap.loadMap("1");
+
+    mLeft = mRight = mUp = mDown = false;
 }
 
 void Editor::run()
@@ -52,10 +55,10 @@ void Editor::processInput()
                 mWindow.close();
                 break;
             case sf::Event::KeyPressed:
-                handlePlayerInput(event.key.code, true);
+                handleUserInput(event.key.code, true);
                 break;
             case sf::Event::KeyReleased:
-                handlePlayerInput(event.key.code, false);
+                handleUserInput(event.key.code, false);
                 break;
         }
     }
@@ -63,6 +66,10 @@ void Editor::processInput()
 
 void Editor::update()
 {
+    if(mLeft) mScreen.x += mScrollSpeed.x * TimePerFrame.asSeconds();
+    if(mRight) mScreen.x -= mScrollSpeed.x * TimePerFrame.asSeconds();
+    if(mUp) mScreen.y += mScrollSpeed.y * TimePerFrame.asSeconds();
+    if(mDown) mScreen.y -= mScrollSpeed.y * TimePerFrame.asSeconds();
 }
 
 void Editor::render()
@@ -75,21 +82,21 @@ void Editor::render()
     mWindow.display();
 }
 
-void Editor::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
+void Editor::handleUserInput(sf::Keyboard::Key key, bool isPressed)
 {
     switch(key)
     {
         case sf::Keyboard::Left:
-            if (isPressed) mScreen.x += 25;
+            mLeft = isPressed;
             break;
         case sf::Keyboard::Right:
-            if (isPressed) mScreen.x -= 25;
+            mRight = isPressed;
             break;
         case sf::Keyboard::Up:
-            if (isPressed) mScreen.y += 25;
+            mUp = isPressed;
             break;
         case sf::Keyboard::Down:
-            if (isPressed) mScreen.y -= 25;
+            mDown = isPressed;
             break;
         case sf::Keyboard::R:
             reset();

@@ -21,7 +21,7 @@ class Editor
         void        processInput();
         void        update();
         void        render();
-        void        handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
+        void        handleUserInput(sf::Keyboard::Key key, bool isPressed);
         void        reset();
 
     private:
@@ -35,6 +35,9 @@ class Editor
         static const sf::Time       TimePerFrame;
 
         Map                         mMap;
+
+        sf::Vector2f                mScrollSpeed;
+        bool                        mLeft, mRight, mUp, mDown;
 };
 
 #endif
