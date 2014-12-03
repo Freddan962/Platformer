@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "tile.hpp"
+#include "decoration.hpp"
+#include "tree.hpp"
 
 class Selector
 {
@@ -21,6 +23,7 @@ class Selector
     private:
         sf::RectangleShape mShape;
         int textureId;
+        int tileStart, decorationStart, treeStart;
 };
 
 #endif

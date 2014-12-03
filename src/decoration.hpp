@@ -12,8 +12,9 @@ class Decoration : public Entity
                     Decoration();
         static void loadTextures();
         void        setTexture(int id);
+        static sf::Texture *getTexture(int id);
+        static const int NTEXTURES;
     private:
-        static const int nTextures;
         static std::vector<sf::Texture> textures;
 };
 
