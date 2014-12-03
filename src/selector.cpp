@@ -3,14 +3,20 @@
 Selector::Selector()
 {
     mShape.setSize(sf::Vector2f(Tile::WIDTH, Tile::HEIGHT));
+    mShape.setFillColor(sf::Color::Transparent);
     mShape.setOutlineColor(sf::Color::Black);
     mShape.setOutlineThickness(1.f);
 
-    textureId = -1;
+    textureId = 0;
 }
 
 void Selector::update()
 {
+    if (mShape.getFillColor() == sf::Color::Transparent && textureId != 0)
+        mShape.setFillColor(sf::Color(255, 255, 255, 255));
+    else if (textureId == 0)
+        mShape.setFillColor(sf::Color::Transparent);
+
     mShape.setTexture(Tile::getTexture(textureId));
 }
 
