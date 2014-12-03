@@ -1,16 +1,16 @@
 #ifndef EDITOR_HPP
 #define EDITOR_HPP
 
+#include <string>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-
-#include <string>
 
 #include "physics.hpp"
 #include "map.hpp"
 #include "player.hpp"
 #include "tile.hpp"
 #include "selector.hpp"
+#include "tilepreviewer.hpp"
 
 class Editor
 {
@@ -50,5 +50,6 @@ class Editor
         bool                        mLeft, mRight, mUp, mDown;
 
         Selector                    mSelector;
+        TilePreviewer               mTilePreviewer;
 };
 #endif

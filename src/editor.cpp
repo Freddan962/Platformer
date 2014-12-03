@@ -22,6 +22,7 @@ Editor::Editor()
 
     mViewMode = true;
     mLeft = mRight = mUp = mDown = false;
+    mTilePreviewer.setSelector(&mSelector);
 }
 
 void Editor::run()
@@ -79,12 +80,11 @@ void Editor::update()
     sf::Vector2i mousePos = sf::Mouse::getPosition(mWindow);
     int tileCol = (mousePos.x + mScreen.x) / Tile::WIDTH;
     int tileRow = (mousePos.y + mScreen.y) / Tile::HEIGHT;
-    sf::Vector2f mouseTilePos;
-    mouseTilePos.x = tileCol * Tile::WIDTH;
-    mouseTilePos.y = tileRow * Tile::HEIGHT;
+    sf::Vector2f mouseTilePos(tileCol * Tile::WIDTH, tileRow * Tile::HEIGHT);
 
     mSelector.getShape()->setPosition(mouseTilePos.x, mouseTilePos.y);
 
+    mTilePreviewer.update(mScreen);
     mMap.getBackground()->setPosition(mScreen);
 }
 
@@ -95,6 +95,7 @@ void Editor::render()
     mWindow.setView(mView);
     mMap.draw(mWindow);
     mSelector.draw(mWindow);
+    mTilePreviewer.draw(mWindow);
     mWindow.setView(mWindow.getDefaultView());
     mWindow.display();
 }

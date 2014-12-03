@@ -53,3 +53,8 @@ sf::RectangleShape *Selector::getShape()
 {
     return &mShape;
 }
+
+int Selector::getTextureId()
+{
+    return textureId;
+}

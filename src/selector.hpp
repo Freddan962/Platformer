@@ -14,6 +14,8 @@ class Selector
         void    previousTexture();
         void    changeTexture(int modifier);
 
+        int     getTextureId();
+
         sf::RectangleShape *getShape();
 
     private:
