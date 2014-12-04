@@ -7,27 +7,18 @@ Selector::Selector()
     mShape.setOutlineColor(sf::Color::Black);
     mShape.setOutlineThickness(1.f);
 
-    textureId = 0;
-
-    tileStart = 1;
-    decorationStart = Tile::NTEXTURES;
-    treeStart = decorationStart + Tree::NTEXTURES;
-
+    textureId = -1;
 }
 
 void Selector::update()
 {
-    if (mShape.getFillColor() == sf::Color::Transparent && textureId != 0)
+    if (mShape.getFillColor() == sf::Color::Transparent && textureId != -1)
         mShape.setFillColor(sf::Color(255, 255, 255, 255));
-    else if (textureId == 0)
+    else if (textureId == -1)
         mShape.setFillColor(sf::Color::Transparent);
 
-    if (textureId > 0 && textureId < decorationStart)
-        mShape.setTexture(Tile::getTexture(textureId));
-    else if (textureId >= decorationStart && textureId < treeStart)
-        mShape.setTexture(Decoration::getTexture(textureId - decorationStart));
-    else if (textureId >= treeStart)
-        mShape.setTexture(Tree::getTexture(textureId - treeStart));
+    if (textureId >= 0)
+        mShape.setTexture(Textureholder::getTexture(textureId));
 
     mShape.setTextureRect(sf::IntRect(0, 0, mShape.getTexture()->getSize().x, mShape.getTexture()->getSize().y));
 }
@@ -39,22 +30,25 @@ void Selector::draw(sf::RenderTarget &target)
 
 void Selector::nextTexture()
 {
-    textureId += 1;
-    update();
+    if (textureId <= Textureholder::TEXTURES_END)
+    {
+        textureId += 1;
+        update();
+    }
 }
 
 void Selector::previousTexture()
 {
-    if (textureId > 0)
+    if (textureId - 1 >= -1)
     {
+        textureId -= 1;
         update();
-        textureId += 1;
     }
 }
 
 void Selector::changeTexture(int modifier)
 {
-    if (textureId + modifier < treeStart + Tree::NTEXTURES && textureId + modifier >= 0)
+    if (textureId + modifier <= Textureholder::TEXTURES_END && textureId + modifier >= -1)
     {
         textureId += modifier;
         update();

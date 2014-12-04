@@ -8,6 +8,8 @@ const int Textureholder::TILES_END = NTILES - 1;
 const int Textureholder::DECORATIONS_END = TILES_END + NDECORATIONS;
 const int Textureholder::TREES_END = DECORATIONS_END + NTREES;
 
+const int Textureholder::TEXTURES_END = TREES_END;
+
 std::vector<sf::Texture> Textureholder::textures;
 
 void Textureholder::loadTextures()
@@ -15,8 +17,6 @@ void Textureholder::loadTextures()
     loadTexture(NTILES, "");
     loadTexture(NDECORATIONS, "d");
     loadTexture(NTREES, "t");
-
-    std::cout << "TE : " << TILES_END << " DE : " << DECORATIONS_END << " TE : " << TREES_END;
 }
 
 void Textureholder::loadTexture(int size, std::string prefix)
@@ -33,27 +33,20 @@ void Textureholder::loadTexture(int size, std::string prefix)
 
 sf::Texture *Textureholder::getTexture(int id)
 {
-    if(id >= 0 && id <= TILES_END)
-        return getTile(id);
-    else if(id > TILES_END & id <= DECORATIONS_END)
-        return getDecoration(id);
-    else if(id > DECORATIONS_END && id <= TREES_END)
-        return getTree(id);
-    else
-        std::cout << "ERROR: Textureholder::getTexture Id out of scope!";
+    return &textures.at(id);
 }
 
-sf::Texture *Textureholder::getTile(int id)
+sf::Texture *Textureholder::getTileT(int id)
 {
-    return &textures.at(id+1);
+    return &textures.at(id);
 }
 
-sf::Texture *Textureholder::getDecoration(int id)
+sf::Texture *Textureholder::getDecorationT(int id)
 {
     return &textures.at(TILES_END + id);
 }
 
-sf::Texture *Textureholder::getTree(int id)
+sf::Texture *Textureholder::getTreeT(int id)
 {
     return &textures.at(DECORATIONS_END + id);
 }
