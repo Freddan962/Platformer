@@ -77,12 +77,20 @@ void Editor::update()
     if(mUp) mScreen.y -= mScrollSpeed.y * TimePerFrame.asSeconds();
     if(mDown) mScreen.y += mScrollSpeed.y * TimePerFrame.asSeconds();
 
+    // Sets the selector's position only if within screen
     sf::Vector2i mousePos = sf::Mouse::getPosition(mWindow);
-    int tileCol = (mousePos.x + mScreen.x) / Tile::WIDTH;
-    int tileRow = (mousePos.y + mScreen.y) / Tile::HEIGHT;
-    sf::Vector2f mouseTilePos(tileCol * Tile::WIDTH, tileRow * Tile::HEIGHT);
+    int tileCol = mSelector.getShape()->getPosition().x/100;
+    int tileRow = mSelector.getShape()->getPosition().y/100;
 
+    if (mousePos.x + mScreen.x > 0)
+        tileCol = (mousePos.x + mScreen.x) / Tile::WIDTH;
+
+    if (mousePos.y + mScreen.y > 0)
+        tileRow = (mousePos.y + mScreen.y) / Tile::HEIGHT;
+
+    sf::Vector2f mouseTilePos(tileCol * Tile::WIDTH, tileRow * Tile::HEIGHT);
     mSelector.getShape()->setPosition(mouseTilePos.x, mouseTilePos.y);
+
 
     mTilePreviewer.update(mScreen);
     mMap.getBackground()->setPosition(mScreen);
