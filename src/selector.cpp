@@ -12,6 +12,7 @@ Selector::Selector()
     tileStart = 1;
     decorationStart = Tile::NTEXTURES;
     treeStart = decorationStart + Tree::NTEXTURES;
+
 }
 
 void Selector::update()
@@ -27,6 +28,8 @@ void Selector::update()
         mShape.setTexture(Decoration::getTexture(textureId - decorationStart));
     else if (textureId >= treeStart)
         mShape.setTexture(Tree::getTexture(textureId - treeStart));
+
+    mShape.setTextureRect(sf::IntRect(0, 0, mShape.getTexture()->getSize().x, mShape.getTexture()->getSize().y));
 }
 
 void Selector::draw(sf::RenderTarget &target)
