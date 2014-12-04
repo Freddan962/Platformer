@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
+#include "textureholder.hpp"
 #include "physics.hpp"
 #include "map.hpp"
 #include "player.hpp"

@@ -14,6 +14,8 @@ Editor::Editor()
     mView.reset(sf::FloatRect(0, 0, WIDTH, HEIGHT));
     mView.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
 
+    Textureholder::loadTextures();
+
     Tile::loadTextures();
     Decoration::loadTextures();
     Tree::loadTextures();
@@ -77,7 +79,7 @@ void Editor::update()
     if(mUp) mScreen.y -= mScrollSpeed.y * TimePerFrame.asSeconds();
     if(mDown) mScreen.y += mScrollSpeed.y * TimePerFrame.asSeconds();
 
-    // Sets the selector's position only if within screen
+    // Sets the selector's position only if within map boundaries
     sf::Vector2i mousePos = sf::Mouse::getPosition(mWindow);
     int tileCol = mSelector.getShape()->getPosition().x/100;
     int tileRow = mSelector.getShape()->getPosition().y/100;
