@@ -13,14 +13,17 @@ TilePreviewer::TilePreviewer()
 
     border.x = 5;
     border.y = 175;
-
     rectSpace.y = 50;
 }
 
 void TilePreviewer::update(sf::Vector2f &relPos)
 {
-    updateTiles();
+    if (oldTextureId != selector->getTextureId())
+        updateTiles();
+
     mShape.setPosition(relPos);
+
+    oldTextureId = selector->getTextureId();
 }
 
 void TilePreviewer::draw(sf::RenderTarget &target)

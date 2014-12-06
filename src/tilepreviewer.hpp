@@ -12,6 +12,7 @@ class TilePreviewer
         void update(sf::Vector2f &relPos);
         void draw(sf::RenderTarget &target);
         void setSelector(Selector *nSelector);
+
     private:
         void updateTiles();
         void fillPreviewers(int nTop, int nBot);
@@ -21,7 +22,9 @@ class TilePreviewer
         int  topTilesNeeded();
         int  botTilesNeeded();
         sf::RectangleShape createPreviewRect(int textureId);
+
     private:
+        int oldTextureId;
         static const sf::Vector2f previewSize;
         sf::Vector2f border, rectSpace;
         sf::RectangleShape mShape;
