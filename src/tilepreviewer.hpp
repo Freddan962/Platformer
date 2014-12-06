@@ -14,15 +14,21 @@ class TilePreviewer
         void setSelector(Selector *nSelector);
     private:
         void updateTiles();
+        void fillPreviewers(int nTop, int nBot);
+        void positionPreviewers(int nTop, int nBot);
+        void fixTexture();
+
+        int  topTilesNeeded();
+        int  botTilesNeeded();
+        sf::RectangleShape createPreviewRect(int textureId);
     private:
         static const sf::Vector2f previewSize;
         sf::Vector2f border, rectSpace;
         sf::RectangleShape mShape;
         Selector *selector;
 
-        std::vector<sf::RectangleShape> rectPreviewers;
-        std::vector<sf::RectangleShape> rectTopPreviewers;
-        std::vector<sf::RectangleShape> rectBotPreviewers;
+        std::vector<sf::RectangleShape> topPreviewers;
+        std::vector<sf::RectangleShape> botPreviewers;
         sf::RectangleShape selectedRect;
 };
 

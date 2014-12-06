@@ -19,99 +19,112 @@ TilePreviewer::TilePreviewer()
 
 void TilePreviewer::update(sf::Vector2f &relPos)
 {
-    mShape.setPosition(relPos);
-
-    for (int i = 0; i < rectPreviewers.size(); i++)
-        rectPreviewers.at(i).setPosition(border.x + relPos.x, relPos.y + border.y + rectSpace.y * i);
-
     updateTiles();
+    mShape.setPosition(relPos);
 }
 
 void TilePreviewer::draw(sf::RenderTarget &target)
 {
     target.draw(mShape);
 
-    for (int i = 0; i < rectTopPreviewers.size(); i++)
-        target.draw(rectTopPreviewers.at(i));
+    for (int i = 0; i < topPreviewers.size(); i++)
+        target.draw(topPreviewers.at(i));
 
     target.draw(selectedRect);
 
-    for (int i = 0; i < rectBotPreviewers.size(); i++)
-        target.draw(rectBotPreviewers.at(i));
+    for (int i = 0; i < botPreviewers.size(); i++)
+        target.draw(botPreviewers.at(i));
 }
 
 void TilePreviewer::updateTiles()
 {
-    rectPreviewers.clear();
-    rectTopPreviewers.clear();
-    rectBotPreviewers.clear();
+    topPreviewers.clear();
+    botPreviewers.clear();
 
-    int nBottomTiles;
-    if (selector->getTextureId() > Textureholder::TEXTURES_END - 5)
-        nBottomTiles = Textureholder::TEXTURES_END - selector->getTextureId();
-    else
-        nBottomTiles = 4;
+    int nTop = topTilesNeeded();
+    int nBot = botTilesNeeded();
 
-    int nTopTiles;
-    if (selector->getTextureId() > -1)
+    fillPreviewers(nTop, nBot);
+    positionPreviewers(nTop, nBot);
+    fixTexture();
+}
+
+void TilePreviewer::fillPreviewers(int nTop, int nBot)
+{
+    for (int i = nTop; i > 0; i--)
+        topPreviewers.push_back(createPreviewRect(selector->getTextureId() - i));
+
+    for (int i = 0; i < nBot; i++)
+        botPreviewers.push_back(createPreviewRect(selector->getTextureId() + i + 1));
+}
+
+
+void TilePreviewer::positionPreviewers(int nTop, int nBot)
+{
+    int space = (3 - nTop) * rectSpace.y;
+    for (int i = 0; i < topPreviewers.size(); i++)
+        topPreviewers.at(i).setPosition(border.x, border.y + rectSpace.y * i + space);
+
+    selectedRect.setPosition(sf::Vector2f(border.x, border.y + rectSpace.y * nTop + space));
+
+    space = rectSpace.y * 2 + previewSize.y * 3;
+    for (int i = 0; i < botPreviewers.size(); i++)
+        botPreviewers.at(i).setPosition(border.x, border.y + rectSpace.y * i + space);
+}
+
+void TilePreviewer::fixTexture()
+{
+    for (int i = 0; i < topPreviewers.size(); i++)
     {
-        nTopTiles = selector->getTextureId();
-
-        if (nTopTiles > 4)
-            nTopTiles = 4;
-    }
-    else
-        nTopTiles = 0;
-
-    std::cout << nBottomTiles << " t: " << nTopTiles << std::endl;
-
-    for (int i = nTopTiles; i > 0; i--)
-    {
-        sf::RectangleShape shape(previewSize);
-        shape.setTexture(Textureholder::getTexture(selector->getTextureId() - i));
-        rectTopPreviewers.push_back(shape);
+        sf::RectangleShape shape = topPreviewers.at(i);
+        shape.setTextureRect(sf::IntRect(0, 0, shape.getTexture()->getSize().x, shape.getTexture()->getSize().y));
     }
 
-    int nExtraSpace = (3 - nTopTiles) * rectSpace.y;
-    for (int i = 0; i < rectTopPreviewers.size(); i++)
-        rectTopPreviewers.at(i).setPosition(border.x, border.y + rectSpace.y * i + nExtraSpace);
-
-    for (int i = 0; i < nBottomTiles; i++)
-    {
-        sf::RectangleShape shape(previewSize);
-
-        int textureId = selector->getTextureId() == -1 ? 1 + selector->getTextureId() + i : selector->getTextureId() + i + 1;
-        shape.setTexture(Textureholder::getTexture(textureId));
-        rectBotPreviewers.push_back(shape);
-    }
 
     int textureId = selector->getTextureId() > -1 ? selector->getTextureId() : 0;
     selectedRect.setTexture(Textureholder::getTexture(textureId));
-    selectedRect.setPosition(sf::Vector2f(border.x, border.y + rectSpace.y * nTopTiles + nExtraSpace));
 
     if (selector->getTextureId() >= 0)
         selectedRect.setFillColor(sf::Color(255, 255, 255, 255));
     else
         selectedRect.setFillColor(sf::Color::Transparent);
 
-    nExtraSpace = rectSpace.y * 2 + previewSize.y * 3;
-    for (int i = 0; i < rectBotPreviewers.size(); i++)
-        rectBotPreviewers.at(i).setPosition(border.x, border.y + rectSpace.y * i + nExtraSpace);
-
-
-    for (int i = 0; i < rectTopPreviewers.size(); i++)
-    {
-        sf::RectangleShape shape = rectTopPreviewers.at(i);
-        shape.setTextureRect(sf::IntRect(0, 0, shape.getTexture()->getSize().x, shape.getTexture()->getSize().y));
-    }
-
     selectedRect.setTextureRect(sf::IntRect(0, 0, selectedRect.getTexture()->getSize().x, selectedRect.getTexture()->getSize().y));
 
-    for (int i = 0; i < rectBotPreviewers.size(); i++)
+    for (int i = 0; i < botPreviewers.size(); i++)
     {
-        sf::RectangleShape shape = rectBotPreviewers.at(i);
+        sf::RectangleShape shape = botPreviewers.at(i);
         shape.setTextureRect(sf::IntRect(0, 0, shape.getTexture()->getSize().x, shape.getTexture()->getSize().y));
     }
+}
+
+int TilePreviewer::topTilesNeeded()
+{
+    if (selector->getTextureId() > -1)
+    {
+        if (selector->getTextureId() > 4)
+            return 4;
+        else
+            return selector->getTextureId();
+    }
+    else
+        return 0;
+}
+
+int TilePreviewer::botTilesNeeded()
+{
+    if (selector->getTextureId() > Textureholder::TEXTURES_END - 4 - 1)
+        return Textureholder::TEXTURES_END - selector->getTextureId();
+    else
+        return 4;
+}
+
+sf::RectangleShape TilePreviewer::createPreviewRect(int textureId)
+{
+    sf::RectangleShape shape(previewSize);
+    shape.setTexture(Textureholder::getTexture(textureId));
+
+    return shape;
 }
 
 void TilePreviewer::setSelector(Selector *nSelector)
