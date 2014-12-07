@@ -16,27 +16,22 @@ TilePreviewer::TilePreviewer()
     rectSpace.y = 50;
 }
 
-void TilePreviewer::update(sf::Vector2f &relPos)
+void TilePreviewer::update()
 {
     if (oldTextureId != selector->getTextureId())
         updateTiles();
 
-    mShape.setPosition(relPos);
-
-    oldTextureId = selector->getTextureId();
-}
-
-void TilePreviewer::draw(sf::RenderTarget &target)
-{
-    target.draw(mShape);
+    mShape.setPosition(*relativePos);
 
     for (int i = 0; i < topPreviewers.size(); i++)
-        target.draw(topPreviewers.at(i));
+        topPreviewers.at(i).setPosition(topPreviewers.at(i).getPosition() + *relativePos);
 
-    target.draw(selectedRect);
+    selectedRect.setPosition(*relativePos);
 
     for (int i = 0; i < botPreviewers.size(); i++)
-        target.draw(botPreviewers.at(i));
+        botPreviewers.at(i).setPosition(topPreviewers.at(i).getPosition() + *relativePos);
+
+    oldTextureId = selector->getTextureId();
 }
 
 void TilePreviewer::updateTiles()
@@ -50,6 +45,19 @@ void TilePreviewer::updateTiles()
     fillPreviewers(nTop, nBot);
     positionPreviewers(nTop, nBot);
     fixTexture();
+}
+
+void TilePreviewer::draw(sf::RenderTarget &target)
+{
+    target.draw(mShape);
+
+    for (int i = 0; i < topPreviewers.size(); i++)
+        target.draw(topPreviewers.at(i));
+
+    target.draw(selectedRect);
+
+    for (int i = 0; i < botPreviewers.size(); i++)
+        target.draw(botPreviewers.at(i));
 }
 
 void TilePreviewer::fillPreviewers(int nTop, int nBot)
@@ -133,4 +141,9 @@ sf::RectangleShape TilePreviewer::createPreviewRect(int textureId)
 void TilePreviewer::setSelector(Selector *nSelector)
 {
     selector = nSelector;
+}
+
+void setRelativePos(sf::Vector2f *pos)
+{
+    relativePos = pos;
 }
