@@ -16,20 +16,15 @@ TilePreviewer::TilePreviewer()
     rectSpace.y = 50;
 }
 
-void TilePreviewer::update()
+void TilePreviewer::update(sf::Vector2f &relPos)
 {
+    relativePos = relPos;
+
     if (oldTextureId != selector->getTextureId())
         updateTiles();
 
-    mShape.setPosition(*relativePos);
-
-    for (int i = 0; i < topPreviewers.size(); i++)
-        topPreviewers.at(i).setPosition(topPreviewers.at(i).getPosition() + *relativePos);
-
-    selectedRect.setPosition(*relativePos);
-
-    for (int i = 0; i < botPreviewers.size(); i++)
-        botPreviewers.at(i).setPosition(topPreviewers.at(i).getPosition() + *relativePos);
+    mShape.setPosition(relativePos);
+    positionPreviewers(topPreviewers.size(), botPreviewers.size());
 
     oldTextureId = selector->getTextureId();
 }
@@ -69,18 +64,17 @@ void TilePreviewer::fillPreviewers(int nTop, int nBot)
         botPreviewers.push_back(createPreviewRect(selector->getTextureId() + i + 1));
 }
 
-
 void TilePreviewer::positionPreviewers(int nTop, int nBot)
 {
     int space = (3 - nTop) * rectSpace.y;
     for (int i = 0; i < topPreviewers.size(); i++)
-        topPreviewers.at(i).setPosition(border.x, border.y + rectSpace.y * i + space);
+        topPreviewers.at(i).setPosition(border.x + relativePos.x, border.y + rectSpace.y * i + space + relativePos.y);
 
-    selectedRect.setPosition(sf::Vector2f(border.x, border.y + rectSpace.y * nTop + space));
+    selectedRect.setPosition(sf::Vector2f(border.x + relativePos.x, border.y + rectSpace.y * nTop + space + relativePos.y));
 
     space = rectSpace.y * 2 + previewSize.y * 3;
     for (int i = 0; i < botPreviewers.size(); i++)
-        botPreviewers.at(i).setPosition(border.x, border.y + rectSpace.y * i + space);
+        botPreviewers.at(i).setPosition(border.x + relativePos.x, border.y + rectSpace.y * i + space + relativePos.y);
 }
 
 void TilePreviewer::fixTexture()
@@ -141,9 +135,4 @@ sf::RectangleShape TilePreviewer::createPreviewRect(int textureId)
 void TilePreviewer::setSelector(Selector *nSelector)
 {
     selector = nSelector;
-}
-
-void setRelativePos(sf::Vector2f *pos)
-{
-    relativePos = pos;
 }

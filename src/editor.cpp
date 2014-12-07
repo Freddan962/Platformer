@@ -25,7 +25,6 @@ Editor::Editor()
     mViewMode = true;
     mLeft = mRight = mUp = mDown = false;
     mTilePreviewer.setSelector(&mSelector);
-    mTilePreviewer.setRelativePos(&mScreen);
 }
 
 void Editor::run()
@@ -94,7 +93,7 @@ void Editor::update()
     sf::Vector2f mouseTilePos(tileCol * Tile::WIDTH, tileRow * Tile::HEIGHT);
     mSelector.getShape()->setPosition(mouseTilePos.x, mouseTilePos.y);
 
-    mTilePreviewer.update();
+    mTilePreviewer.update(mScreen);
     mMap.getBackground()->setPosition(mScreen);
 }
 

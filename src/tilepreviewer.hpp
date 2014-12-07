@@ -9,11 +9,10 @@ class TilePreviewer
 {
     public:
              TilePreviewer();
-        void update();
+        void update(sf::Vector2f &relPos);
         void draw(sf::RenderTarget &target);
 
         void setSelector(Selector *nSelector);
-        void setRelativePos(sf::Vector2f *pos);
     private:
         void updateTiles();
         void fillPreviewers(int nTop, int nBot);
@@ -25,7 +24,7 @@ class TilePreviewer
         sf::RectangleShape createPreviewRect(int textureId);
 
     private:
-        sf::Vector2f *relativePos;
+        sf::Vector2f relativePos;
         int oldTextureId;
         static const sf::Vector2f previewSize;
         sf::Vector2f border, rectSpace;
