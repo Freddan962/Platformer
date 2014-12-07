@@ -43,15 +43,15 @@ void Map::loadData(std::vector<std::vector<A> > &dVector, std::string filepath)
         ss.str(line);
 
         std::vector<A> row;
-        int type, j = 0;
+        int id, j = 0;
 
-        while(ss >> type)
+        while(ss >> id)
         {
             A tObject;
             tObject.mSprite.setPosition(Tile::WIDTH * j, Tile::HEIGHT * i);
 
-            if (type != 0)
-                tObject.setTexture(type-1);
+            if (id != 0)
+                tObject.setTexture(id);
 
             row.push_back(tObject);
             j++;

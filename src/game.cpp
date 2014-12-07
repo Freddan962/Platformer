@@ -12,10 +12,6 @@ Game::Game()
     mView.reset(sf::FloatRect(0, 0, WIDTH, HEIGHT));
     mView.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
 
-    Tile::loadTextures();
-    Decoration::loadTextures();
-    Tree::loadTextures();
-
     mMap.loadMap("1");
 }
 

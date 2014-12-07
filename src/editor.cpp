@@ -16,10 +16,6 @@ Editor::Editor()
 
     Textureholder::loadTextures();
 
-    Tile::loadTextures();
-    Decoration::loadTextures();
-    Tree::loadTextures();
-
     mMap.loadMap("1");
 
     mViewMode = true;

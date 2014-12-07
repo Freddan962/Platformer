@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "decoration.hpp"
+#include "textureholder.hpp"
 
 class Tree : public Entity
 {

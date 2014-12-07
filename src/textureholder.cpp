@@ -38,7 +38,7 @@ sf::Texture *Textureholder::getTexture(int id)
 
 sf::Texture *Textureholder::getTileT(int id)
 {
-    return &textures.at(id);
+    return &textures.at(id - 1);
 }
 
 sf::Texture *Textureholder::getDecorationT(int id)
