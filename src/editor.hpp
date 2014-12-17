@@ -24,8 +24,10 @@ class Editor
         void        update();
         void        render();
         void        handleUserInput(sf::Keyboard::Key key, bool isPressed);
-        void        selectBlock(sf::Event::MouseWheelEvent event);
 
+        void        onMouseClick(sf::Keyboard::Key key, bool isPressed);
+
+        void        selectBlock(sf::Event::MouseWheelEvent event);
         void        reset();
 
         void        moveLeft(bool isPressed);
@@ -34,6 +36,7 @@ class Editor
         void        moveDown(bool isPressed);
 
         void        changeViewMode(bool isPressed);
+        std::string textureIdToC(int id);
 
     private:
         sf::RenderWindow            mWindow;

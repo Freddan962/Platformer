@@ -67,3 +67,16 @@ sf::Sprite *Map::getBackground()
 {
     return &mBackground;
 }
+
+std::vector<std::vector<Tile> > *Map::getTiles()
+{
+    return &mTiles;
+}
+std::vector<std::vector<Decoration> > *Map::getDecorations()
+{
+    return &mDecoration;
+}
+std::vector<std::vector<Tree> > *Map::getTrees()
+{
+    return &mTrees;
+}

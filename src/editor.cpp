@@ -61,6 +61,10 @@ void Editor::processInput()
                 handleUserInput(event.key.code, false);
             case sf::Event::MouseWheelMoved:
                 selectBlock(event.mouseWheel);
+            case sf::Event::MouseButtonPressed:
+                onMouseClick(event.key.code, true);
+            case sf::Event::MouseButtonReleased:
+                onMouseClick(event.key.code, false);
                 break;
             default:
                 break;
@@ -130,6 +134,57 @@ void Editor::handleUserInput(sf::Keyboard::Key key, bool isPressed)
         default:
             break;
     }
+}
+
+void Editor::onMouseClick(sf::Keyboard::Key key, bool isPressed)
+{
+
+    if (isPressed)
+    {
+        if (key == sf::Mouse::Left || key == sf::Mouse::Right)
+        {
+            sf::Vector2f position = mSelector.getShape()->getPosition();
+            sf::Vector2u tilePosition = sf::Vector2u(position.x/Tile::WIDTH, position.y/Tile::HEIGHT);
+
+            if (textureIdToC(mSelector.getTextureId()) == "Tile")
+            {
+                Tile tile;
+
+                if (mSelector.getTextureId() >= 0 && key == sf::Mouse::Left)
+                    tile.setTexture(mSelector.getTextureId() + 1);
+
+                tile.mSprite.setPosition(position);
+                mMap.getTiles()->at(tilePosition.y).at(tilePosition.x) = tile;
+            }
+            else if(textureIdToC(mSelector.getTextureId()) == "Decoration")
+            {
+                Decoration decoration;
+
+                if (mSelector.getTextureId() >= 0 && key == sf::Mouse::Left)
+                {
+                    decoration.setTexture(mSelector.getTextureId());
+                    std::cout << mSelector.getTextureId() << std::endl;
+                }
+
+                decoration.mSprite.setPosition(position);
+                mMap.getDecorations()->at(tilePosition.y).at(tilePosition.x) = decoration;
+            }
+            else if(textureIdToC(mSelector.getTextureId()) == "Tree")
+            {
+
+            }
+        }
+    }
+}
+
+std::string Editor::textureIdToC(int id)
+{
+    if (id <= Textureholder::TILES_END)
+        return "Tile";
+    else if(id > Textureholder::TILES_END &&  id <= Textureholder::DECORATIONS_END)
+        return "Decoration";
+    else if(id > Textureholder::DECORATIONS_END)
+        return "Tree";
 }
 
 void Editor::selectBlock(sf::Event::MouseWheelEvent event)
