@@ -25,13 +25,13 @@ class Editor
         void        render();
         void        handleUserInput(sf::Keyboard::Key key, bool isPressed);
 
-        void        onMouseClick(sf::Keyboard::Key key, bool isPressed);
+        void        onMouseClick(sf::Mouse::Button button, bool isPressed);
 
         void        selectBlock(sf::Event::MouseWheelEvent event);
         void        reset();
 
         template<typename T>
-        T          createMapObject(sf::Keyboard::Key key, sf::Vector2f position, int tModifier = 0);
+        T          createMapObject(sf::Mouse::Button button, sf::Vector2f position, int tModifier = 0);
 
         void        moveLeft(bool isPressed);
         void        moveRight(bool isPressed);

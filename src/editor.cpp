@@ -59,12 +59,15 @@ void Editor::processInput()
                 break;
             case sf::Event::KeyReleased:
                 handleUserInput(event.key.code, false);
+                break;
             case sf::Event::MouseWheelMoved:
                 selectBlock(event.mouseWheel);
+                break;
             case sf::Event::MouseButtonPressed:
-                onMouseClick(event.key.code, true);
+                onMouseClick(event.mouseButton.button, true);
+                break;
             case sf::Event::MouseButtonReleased:
-                onMouseClick(event.key.code, false);
+                onMouseClick(event.mouseButton.button, false);
                 break;
             default:
                 break;
@@ -136,11 +139,11 @@ void Editor::handleUserInput(sf::Keyboard::Key key, bool isPressed)
     }
 }
 
-void Editor::onMouseClick(sf::Keyboard::Key key, bool isPressed)
+void Editor::onMouseClick(sf::Mouse::Button button, bool isPressed)
 {
     if (isPressed)
     {
-        if (key == sf::Mouse::Left || key == sf::Mouse::Right)
+        if (button == sf::Mouse::Left || button == sf::Mouse::Right)
         {
             std::string textureClassName = textureIdToC(mSelector.getTextureId());
             sf::Vector2f position = mSelector.getShape()->getPosition();
@@ -151,21 +154,21 @@ void Editor::onMouseClick(sf::Keyboard::Key key, bool isPressed)
             sf::Vector2u tilePosition = sf::Vector2u(position.x/Tile::WIDTH, position.y/Tile::HEIGHT);
 
             if (textureClassName == "Tile")
-                mMap.getTiles()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tile>(key, position, 1);
+                mMap.getTiles()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tile>(button, position, 1);
             else if (textureClassName == "Decoration")
-                mMap.getDecorations()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Decoration>(key, position);
+                mMap.getDecorations()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Decoration>(button, position);
             else if (textureClassName == "Tree")
-                mMap.getTrees()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tree>(key, position);
+                mMap.getTrees()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tree>(button, position);
         }
     }
 }
 
 template<typename T>
-T Editor::createMapObject(sf::Keyboard::Key key, sf::Vector2f position, int tModifier)
+T Editor::createMapObject(sf::Mouse::Button button, sf::Vector2f position, int tModifier)
 {
     T mapObject;
 
-    if (mSelector.getTextureId() >= 0 && key == sf::Mouse::Left)
+    if (mSelector.getTextureId() >= 0 && button == sf::Mouse::Left)
         mapObject.setTexture(mSelector.getTextureId() + tModifier);
 
     mapObject.mSprite.setPosition(position);
