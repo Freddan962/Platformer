@@ -23,6 +23,7 @@ class Map
         std::vector<std::vector<Tile> > *getTiles();
         std::vector<std::vector<Decoration> > *getDecorations();
         std::vector<std::vector<Tree> > *getTrees();
+
     private:
         template <class A>
         void    loadData(std::vector<std::vector<A> > &dVector, std::string filepath);

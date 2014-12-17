@@ -30,6 +30,9 @@ class Editor
         void        selectBlock(sf::Event::MouseWheelEvent event);
         void        reset();
 
+        template<typename T>
+        T          createMapObject(sf::Keyboard::Key key, sf::Vector2f position, int tModifier = 0);
+
         void        moveLeft(bool isPressed);
         void        moveRight(bool isPressed);
         void        moveUp(bool isPressed);

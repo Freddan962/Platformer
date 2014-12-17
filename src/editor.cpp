@@ -138,46 +138,38 @@ void Editor::handleUserInput(sf::Keyboard::Key key, bool isPressed)
 
 void Editor::onMouseClick(sf::Keyboard::Key key, bool isPressed)
 {
-
     if (isPressed)
     {
         if (key == sf::Mouse::Left || key == sf::Mouse::Right)
         {
+            std::string textureClassName = textureIdToC(mSelector.getTextureId());
             sf::Vector2f position = mSelector.getShape()->getPosition();
+
+            if (textureClassName == "Tree" || textureClassName == "Decoration")
+                position.y += Tile::HEIGHT;
+
             sf::Vector2u tilePosition = sf::Vector2u(position.x/Tile::WIDTH, position.y/Tile::HEIGHT);
 
-            if (textureIdToC(mSelector.getTextureId()) == "Tile")
-            {
-                Tile tile;
-
-                if (mSelector.getTextureId() >= 0 && key == sf::Mouse::Left)
-                    tile.setTexture(mSelector.getTextureId() + 1);
-
-                tile.mSprite.setPosition(position);
-                mMap.getTiles()->at(tilePosition.y).at(tilePosition.x) = tile;
-            }
-            else if(textureIdToC(mSelector.getTextureId()) == "Decoration")
-            {
-                Decoration decoration;
-
-                if (mSelector.getTextureId() >= 0 && key == sf::Mouse::Left)
-                    decoration.setTexture(mSelector.getTextureId());
-
-                decoration.mSprite.setPosition(position);
-                mMap.getDecorations()->at(tilePosition.y).at(tilePosition.x) = decoration;
-            }
-            else if(textureIdToC(mSelector.getTextureId()) == "Tree")
-            {
-                Tree tree;
-
-                if (mSelector.getTextureId() >= 0 && key == sf::Mouse::Left)
-                    tree.setTexture(mSelector.getTextureId());
-
-                tree.mSprite.setPosition(position);
-                mMap.getTrees()->at(tilePosition.y).at(tilePosition.x) = tree;
-            }
+            if (textureClassName == "Tile")
+                mMap.getTiles()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tile>(key, position, 1);
+            else if (textureClassName == "Decoration")
+                mMap.getDecorations()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Decoration>(key, position);
+            else if (textureClassName == "Tree")
+                mMap.getTrees()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tree>(key, position);
         }
     }
+}
+
+template<typename T>
+T Editor::createMapObject(sf::Keyboard::Key key, sf::Vector2f position, int tModifier)
+{
+    T mapObject;
+
+    if (mSelector.getTextureId() >= 0 && key == sf::Mouse::Left)
+        mapObject.setTexture(mSelector.getTextureId() + tModifier);
+
+    mapObject.mSprite.setPosition(position);
+    return mapObject;
 }
 
 std::string Editor::textureIdToC(int id)
