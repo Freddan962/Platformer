@@ -161,17 +161,20 @@ void Editor::onMouseClick(sf::Keyboard::Key key, bool isPressed)
                 Decoration decoration;
 
                 if (mSelector.getTextureId() >= 0 && key == sf::Mouse::Left)
-                {
                     decoration.setTexture(mSelector.getTextureId());
-                    std::cout << mSelector.getTextureId() << std::endl;
-                }
 
                 decoration.mSprite.setPosition(position);
                 mMap.getDecorations()->at(tilePosition.y).at(tilePosition.x) = decoration;
             }
             else if(textureIdToC(mSelector.getTextureId()) == "Tree")
             {
+                Tree tree;
 
+                if (mSelector.getTextureId() >= 0 && key == sf::Mouse::Left)
+                    tree.setTexture(mSelector.getTextureId());
+
+                tree.mSprite.setPosition(position);
+                mMap.getTrees()->at(tilePosition.y).at(tilePosition.x) = tree;
             }
         }
     }
