@@ -41,6 +41,8 @@ class Editor
         void        changeViewMode(bool isPressed);
         std::string textureIdToC(int id);
 
+        sf::Vector2i getMouseTilePos();
+
     private:
         sf::RenderWindow            mWindow;
         sf::View                    mView;

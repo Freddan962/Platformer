@@ -143,6 +143,11 @@ void Editor::onMouseClick(sf::Mouse::Button button, bool isPressed)
 {
     if (isPressed)
     {
+        // if mMap.outside_of_bounds(mouse.x, mouse.y)
+        // mMap.expand()
+        if (mMap.mouseOutOfMap(getMouseTilePos()))
+            mMap.expand(getMouseTilePos());
+
         if (button == sf::Mouse::Left || button == sf::Mouse::Right)
         {
             std::string textureClassName = textureIdToC(mSelector.getTextureId());
@@ -183,6 +188,18 @@ std::string Editor::textureIdToC(int id)
         return "Decoration";
     else if(id > Textureholder::DECORATIONS_END)
         return "Tree";
+}
+
+sf::Vector2i Editor::getMouseTilePos()
+{
+    sf::Vector2i mouseTilePos;
+
+    sf::Vector2i mousePos = sf::Mouse::getPosition(mWindow);
+
+    mouseTilePos.x = (mousePos.x + mScreen.x) / Tile::WIDTH;
+    mouseTilePos.y = (mousePos.y + mScreen.y) / Tile::HEIGHT;
+
+    return mouseTilePos;
 }
 
 void Editor::selectBlock(sf::Event::MouseWheelEvent event)
