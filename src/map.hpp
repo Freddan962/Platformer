@@ -35,7 +35,9 @@ class Map
         void    drawVector(sf::RenderTarget &target, std::vector<std::vector<A> > &dVector);
 
         template <class A>
-        void    expandObjectVector(std::vector<std::vector<A> > &objectVector, sf::Vector2i size);
+        void    expandObjectVectorX(std::vector<std::vector<A> > &objectVector, sf::Vector2i size, int modifier = 0);
+                template <class A>
+        void    expandObjectVectorY(std::vector<std::vector<A> > &objectVector, sf::Vector2i size, int modifier = 0);
 
     private:
         std::vector<std::vector<Tile> > mTiles;

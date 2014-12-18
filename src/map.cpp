@@ -27,6 +27,9 @@ void Map::loadMap(std::string filepath)
     loadData(mTiles, filepath + ".tiles");
     loadData(mTrees, filepath + ".trees");
     loadData(mDecoration, filepath + ".decor");
+
+    mSize.x = mTiles.at(0).size() - 1;
+    mSize.y = mTiles.size() - 1;
 }
 
 template <class A>
@@ -65,58 +68,62 @@ void Map::loadData(std::vector<std::vector<A> > &dVector, std::string filepath)
 
 void Map::expand(sf::Vector2i size)
 {
-    expandObjectVector<Tile>(mTiles, size);
-    expandObjectVector<Decoration>(mDecoration, size);
-    expandObjectVector<Tree>(mTrees, size);
+    if (size.x > mSize.x)
+    {
+        expandObjectVectorX<Tile>(mTiles, size);
+        expandObjectVectorX<Decoration>(mDecoration, size, 1);
+        expandObjectVectorX<Tree>(mTrees, size, 1);
+
+        mSize.x += size.x - mSize.x;
+    }
+
+    if (size.y > mSize.y)
+    {
+        expandObjectVectorY<Tile>(mTiles, size);
+        expandObjectVectorY<Decoration>(mDecoration, size, 1);
+        expandObjectVectorY<Tree>(mTrees, size, 1);
+
+        mSize.y += size.y - mSize.y;
+    }
 }
 
 template<class A>
-void Map::expandObjectVector(std::vector<std::vector<A> > &objectVector, sf::Vector2i size)
+void Map::expandObjectVectorX(std::vector<std::vector<A> > &objectVector, sf::Vector2i size, int modifier)
 {
-    sf::Vector2i tileSize = getTileSize();
+    int deltaX = size.x - mSize.x;
 
-    if (size.x > objectVector.size() - 1)
+    for (int y = 0; y <= mSize.y + modifier; y++)
     {
-        int deltaX = size.x - objectVector.size() - 1;
-
-        std::cout << deltaX << std::endl;
-        for (int y = 0; y < objectVector.size(); y++)
+        for (int nTiles = 0; nTiles < deltaX; nTiles++)
         {
-            for (int nTiles = 0; nTiles < deltaX; nTiles++)
-            {
-                A object;
-                objectVector.at(y).push_back(object);
-            }
+            A object;
+            object.mSprite.setPosition(mSize.x * Tile::WIDTH + nTiles * Tile::WIDTH + Tile::WIDTH, y * Tile::HEIGHT);
+            objectVector.at(y).push_back(object);
         }
     }
+}
 
-    if (size.y > tileSize.y)
+template<class A>
+void Map::expandObjectVectorY(std::vector<std::vector<A> > &objectVector, sf::Vector2i size, int modifier)
+{
+    int deltaY = size.y - mSize.y;
+    for (int i = 0; i < deltaY; i++)
     {
-        int deltaY = size.y - tileSize.y;
-        std::cout << deltaY << "DY" << std::endl;
-        for (int i = 0; i < deltaY; i++)
+        std::vector<A> newObjectLine;
+        for (int j = 0; j <= mSize.x + modifier; j++)
         {
-            std::vector<A> newObjectLine;
-            for (int j = 0; j < objectVector.at(0).size(); j++)
-            {
-                A object;
-                newObjectLine.push_back(object);
-            }
-
-            objectVector.push_back(newObjectLine);
+            A object;
+            object.mSprite.setPosition(sf::Vector2f(Tile::WIDTH * j, Tile::HEIGHT * mSize.y + Tile::HEIGHT * i + Tile::HEIGHT));
+            newObjectLine.push_back(object);
         }
-    }
 
+        objectVector.push_back(newObjectLine);
+    }
 }
 
 sf::Vector2i Map::getTileSize()
 {
-    sf::Vector2i size;
-
-    size.x = mTiles.at(0).size() - 1;
-    size.y = mTiles.size() - 1;
-
-    return size;
+    return mSize;
 }
 
 bool Map::mouseOutOfMap(sf::Vector2i mouseTilePos)
