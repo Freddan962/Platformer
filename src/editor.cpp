@@ -1,7 +1,7 @@
 #include "editor.hpp"
 
 const sf::Time Editor::TimePerFrame = sf::seconds(1.f/120.f);
-const std::string Editor::NAME = "Platformer Editor";
+const std::string Editor::NAME = "Platform Editor";
 const int Editor::WIDTH = 1400;
 const int Editor::HEIGHT = 800;
 
@@ -143,8 +143,6 @@ void Editor::onMouseClick(sf::Mouse::Button button, bool isPressed)
 {
     if (isPressed)
     {
-        // if mMap.outside_of_bounds(mouse.x, mouse.y)
-        // mMap.expand()
         if (mMap.mouseOutOfMap(getMouseTilePos()))
             mMap.expand(getMouseTilePos());
 
