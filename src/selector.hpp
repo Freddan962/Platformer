@@ -8,7 +8,7 @@
 class Selector
 {
     public:
-            Selector();
+                Selector();
         void    update();
         void    draw(sf::RenderTarget &target);
         void    nextTexture();
@@ -18,6 +18,7 @@ class Selector
         int     getTextureId();
 
         sf::RectangleShape *getShape();
+        sf::Texture getTexture();
 
     private:
         sf::RectangleShape mShape;

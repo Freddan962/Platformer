@@ -64,3 +64,8 @@ int Selector::getTextureId()
 {
     return textureId;
 }
+
+sf::Texture Selector::getTexture()
+{
+    return *mShape.getTexture();
+}

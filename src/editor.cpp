@@ -98,6 +98,12 @@ void Editor::update()
 
     mTilePreviewer.update(mScreen);
     mMap.getBackground()->setPosition(mScreen);
+
+    if (mSelection.isActive())
+    {
+        mSelection.setEndPos(getMouseTilePos());
+        mSelection.updateSelection();
+    }
 }
 
 void Editor::render()
@@ -106,6 +112,7 @@ void Editor::render()
     mView.reset(sf::FloatRect(mScreen.x, mScreen.y, WIDTH, HEIGHT));
     mWindow.setView(mView);
     mMap.draw(mWindow);
+    mSelection.draw(mWindow);
     mSelector.draw(mWindow);
     mTilePreviewer.draw(mWindow);
     mWindow.setView(mWindow.getDefaultView());
@@ -143,7 +150,11 @@ void Editor::onMouseClick(sf::Mouse::Button button, bool isPressed)
 {
     if (isPressed)
     {
-        if (mMap.mouseOutOfMap(getMouseTilePos()))
+        if (button == sf::Mouse::Left || button == sf::Mouse::Right)
+        {
+            mSelection.setStartPos(getMouseTilePos());
+        }
+        /*if (mMap.mouseOutOfMap(getMouseTilePos()))
             mMap.expand(getMouseTilePos());
 
         if (button == sf::Mouse::Left || button == sf::Mouse::Right)
@@ -162,6 +173,14 @@ void Editor::onMouseClick(sf::Mouse::Button button, bool isPressed)
                 mMap.getDecorations()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Decoration>(button, position);
             else if (textureClassName == "Tree")
                 mMap.getTrees()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tree>(button, position);
+        }*/
+    }
+    else
+    {
+        if (button == sf::Mouse::Left || button == sf::Mouse::Right)
+        {
+            mSelection.setEndPos(getMouseTilePos());
+            mSelection.updateSelection();
         }
     }
 }
@@ -202,7 +221,11 @@ sf::Vector2i Editor::getMouseTilePos()
 
 void Editor::selectBlock(sf::Event::MouseWheelEvent event)
 {
-    mSelector.changeTexture(event.delta);
+    if (mSelector.getTextureId() + event.delta >= -1)
+    {
+        mSelector.changeTexture(event.delta);
+        mSelection.setTexture(mSelector.getTextureId());
+    }
 }
 
 void Editor::reset()

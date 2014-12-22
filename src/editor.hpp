@@ -12,6 +12,7 @@
 #include "tile.hpp"
 #include "selector.hpp"
 #include "tilepreviewer.hpp"
+#include "selection.hpp"
 
 class Editor
 {
@@ -60,5 +61,6 @@ class Editor
 
         Selector                    mSelector;
         TilePreviewer               mTilePreviewer;
+        Selection                   mSelection;
 };
 #endif
