@@ -12,14 +12,15 @@ class Selection
         Selection();
         void draw(sf::RenderTarget &target);
         void updateSelection();
+        bool isActive();
+        void reset();
 
         void setStartPos(sf::Vector2i start);
         void setEndPos(sf::Vector2i end);
-
         void setTexture(int id);
 
-        bool isActive();
-
+        sf::Vector2i *getStartPos();
+        sf::Vector2i *getEndPos();
     private:
         std::vector<std::vector<sf::Sprite> > squares;
 

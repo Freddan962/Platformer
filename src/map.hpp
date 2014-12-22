@@ -20,6 +20,9 @@ class Map
         void        loadMap(std::string filepath);
         void        expand(sf::Vector2i size);
 
+        template <class A>
+        void        fillStuff(sf::Vector2i startPos, sf::Vector2i endPos, A entity, std::string type);
+
         sf::Sprite  *getBackground();
         std::vector<std::vector<Tile> > *getTiles();
         std::vector<std::vector<Decoration> > *getDecorations();

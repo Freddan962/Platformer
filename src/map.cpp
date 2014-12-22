@@ -121,6 +121,28 @@ void Map::expandObjectVectorY(std::vector<std::vector<A> > &objectVector, sf::Ve
     }
 }
 
+
+template <class A>
+void Map::fillStuff(sf::Vector2i startPos, sf::Vector2i endPos, A entity, std::string type)
+{
+    sf::Vector2i deltaPos = endPos - startPos;
+    for (int y = 0; y < deltaPos.y; y++)
+    {
+        for (int x = 0; x < deltaPos.x; x++)
+        {
+
+            if (type == "Tile")
+                mTiles.at(y).at(x) = entity;
+
+            if (type == "Decoration")
+                mTiles.at(y).at(x) = entity;
+
+            if (type == "Tree")
+                mTiles.at(y).at(x) = entity;
+        }
+    }
+}
+
 sf::Vector2i Map::getTileSize()
 {
     return mSize;

@@ -99,7 +99,7 @@ void Editor::update()
     mTilePreviewer.update(mScreen);
     mMap.getBackground()->setPosition(mScreen);
 
-    if (mSelection.isActive())
+    if (mSelection.isActive() && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
     {
         mSelection.setEndPos(getMouseTilePos());
         mSelection.updateSelection();
@@ -150,37 +150,47 @@ void Editor::onMouseClick(sf::Mouse::Button button, bool isPressed)
 {
     if (isPressed)
     {
-        if (button == sf::Mouse::Left || button == sf::Mouse::Right)
-        {
+        if (button == sf::Mouse::Left)
             mSelection.setStartPos(getMouseTilePos());
-        }
-        /*if (mMap.mouseOutOfMap(getMouseTilePos()))
+
+        if (mMap.mouseOutOfMap(getMouseTilePos()))
             mMap.expand(getMouseTilePos());
-
-        if (button == sf::Mouse::Left || button == sf::Mouse::Right)
-        {
-            std::string textureClassName = textureIdToC(mSelector.getTextureId());
-            sf::Vector2f position = mSelector.getShape()->getPosition();
-
-            if (textureClassName == "Tree" || textureClassName == "Decoration")
-                position.y += Tile::HEIGHT;
-
-            sf::Vector2u tilePosition = sf::Vector2u(position.x/Tile::WIDTH, position.y/Tile::HEIGHT);
-
-            if (textureClassName == "Tile")
-                mMap.getTiles()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tile>(button, position, 1);
-            else if (textureClassName == "Decoration")
-                mMap.getDecorations()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Decoration>(button, position);
-            else if (textureClassName == "Tree")
-                mMap.getTrees()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tree>(button, position);
-        }*/
     }
     else
     {
-        if (button == sf::Mouse::Left || button == sf::Mouse::Right)
+        std::string textureClassName = textureIdToC(mSelector.getTextureId());
+        sf::Vector2f position = mSelector.getShape()->getPosition();
+
+        if (button == sf::Mouse::Left)
         {
             mSelection.setEndPos(getMouseTilePos());
             mSelection.updateSelection();
+
+            if (textureClassName == "Tile")
+                mMap.fillStuff(*mSelection.getStartPos(), *mSelection.getEndPos(), createMapObject<Tile>(button, position, 1), textureClassName);
+            else if(textureClassName == "Decoration")
+                mMap.fillStuff(*mSelection.getStartPos(), *mSelection.getEndPos(), createMapObject<Decoration>(button, position), textureClassName);
+            else if(textureClassName == "Tree")
+                mMap.fillStuff(*mSelection.getStartPos(), *mSelection.getEndPos(), createMapObject<Tree>(button, position), textureClassName);
+            mSelection.reset();
+        }
+
+        if (button == sf::Mouse::Left || button == sf::Mouse::Right)
+        {
+            if (!mSelection.isActive())
+            {
+                if (textureClassName == "Tree" || textureClassName == "Decoration")
+                    position.y += Tile::HEIGHT;
+
+                sf::Vector2u tilePosition = sf::Vector2u(position.x/Tile::WIDTH, position.y/Tile::HEIGHT);
+
+                if (textureClassName == "Tile")
+                    mMap.getTiles()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tile>(button, position, 1);
+                else if (textureClassName == "Decoration")
+                    mMap.getDecorations()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Decoration>(button, position);
+                else if (textureClassName == "Tree")
+                    mMap.getTrees()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tree>(button, position);
+            }
         }
     }
 }
