@@ -17,8 +17,8 @@ void Map::draw(sf::RenderTarget &target)
 template <class A>
 void Map::drawVector(sf::RenderTarget &target, std::vector<std::vector<A> > &dVector)
 {
-    for (int i = 0; i < dVector.size(); i++)
-        for (int j = 0; j < dVector.at(i).size(); j++)
+    for (unsigned int i = 0; i < dVector.size(); i++)
+        for (unsigned int j = 0; j < dVector.at(i).size(); j++)
             dVector.at(i).at(j).draw(target);
 }
 
@@ -135,10 +135,10 @@ void Map::fillStuff(sf::Vector2i startPos, sf::Vector2i endPos, A entity, std::s
                 mTiles.at(y).at(x) = entity;
 
             if (type == "Decoration")
-                mTiles.at(y).at(x) = entity;
+                mDecoration.at(y).at(x) = entity;
 
             if (type == "Tree")
-                mTiles.at(y).at(x) = entity;
+                mTrees.at(y).at(x) = entity;
         }
     }
 }
@@ -151,7 +151,7 @@ sf::Vector2i Map::getTileSize()
 bool Map::mouseOutOfMap(sf::Vector2i mouseTilePos)
 {
     sf::Vector2i tileSize = getTileSize();
-    return (mouseTilePos.x > getTileSize().x || mouseTilePos.y > getTileSize().y);
+    return (mouseTilePos.x > tileSize.x || mouseTilePos.y > tileSize.y);
 }
 
 sf::Sprite *Map::getBackground()

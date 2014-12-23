@@ -166,7 +166,7 @@ void Editor::onMouseClick(sf::Mouse::Button button, bool isPressed)
             mSelection.setEndPos(getMouseTilePos());
             mSelection.updateSelection();
 
-            if (textureClassName == "Tile")
+          if (textureClassName == "Tile")
                 mMap.fillStuff(*mSelection.getStartPos(), *mSelection.getEndPos(), createMapObject<Tile>(button, position, 1), textureClassName);
             else if(textureClassName == "Decoration")
                 mMap.fillStuff(*mSelection.getStartPos(), *mSelection.getEndPos(), createMapObject<Decoration>(button, position), textureClassName);
@@ -177,20 +177,17 @@ void Editor::onMouseClick(sf::Mouse::Button button, bool isPressed)
 
         if (button == sf::Mouse::Left || button == sf::Mouse::Right)
         {
-            if (!mSelection.isActive())
-            {
-                if (textureClassName == "Tree" || textureClassName == "Decoration")
-                    position.y += Tile::HEIGHT;
+            if (textureClassName == "Tree" || textureClassName == "Decoration")
+                position.y += Tile::HEIGHT;
 
-                sf::Vector2u tilePosition = sf::Vector2u(position.x/Tile::WIDTH, position.y/Tile::HEIGHT);
+            sf::Vector2u tilePosition = sf::Vector2u(position.x/Tile::WIDTH, position.y/Tile::HEIGHT);
 
-                if (textureClassName == "Tile")
-                    mMap.getTiles()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tile>(button, position, 1);
-                else if (textureClassName == "Decoration")
-                    mMap.getDecorations()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Decoration>(button, position);
-                else if (textureClassName == "Tree")
-                    mMap.getTrees()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tree>(button, position);
-            }
+            if (textureClassName == "Tile")
+                mMap.getTiles()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tile>(button, position, 1);
+            else if (textureClassName == "Decoration")
+                mMap.getDecorations()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Decoration>(button, position);
+            else if (textureClassName == "Tree")
+                mMap.getTrees()->at(tilePosition.y).at(tilePosition.x) = createMapObject<Tree>(button, position);
         }
     }
 }
